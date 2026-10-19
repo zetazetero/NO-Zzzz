@@ -1,15 +1,13 @@
-
 name: Compilar NO Zzzzzz APK
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - principal
+    branches: [principal]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Descargar repositorio
@@ -24,8 +22,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Preparar Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Comprobar Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/platforms"
+          ls "$ANDROID_HOME/build-tools"
 
       - name: Preparar Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -41,4 +42,3 @@ jobs:
           name: NO-Zzzzzz-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-          
